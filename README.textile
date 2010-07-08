@@ -4,7 +4,7 @@ h2. Introduction
 
 One of the most promising and mysterious new frameworks introduced in iOS 3.2 is Core Text. Apple defines Core Text as a "text drawing engine", which allows Mac (and now iPad) apps to render rich text on any graphics context. Strings drawn with Core Text feature lots of custom settings such as detailed font information, columns, variable line and paragraph heights and several different attributes, which designers and font aficionados surely understand much better than I do. Many new apps have been using this framework since the release of the iPad, particularly newspapers and ebook reader applications, rendering gorgeous text in custom fonts, many of them not available natively in iOS. This framework is also used in lifestyle and corporate applications, too, where using a custom font is sometimes required to match the specifications of brands and trademarks.
 
-<img src="marsedit://pending/62A830AE-573F-4FB8-BB9E-4EA3116386FC/" alt="coretextwrapper.png" border="0" width="440" height="300" class="alignnone size-medium" />
+!http://akosma.com/wp/wp-content/uploads/2010/07/coretextwrapper.png!
 
 It is very important to understand that Core Text is really just a text drawing engine to be used on top of Quartz (Core Graphics), to render rich text on any graphics context. Core Text cannot be used to create a rich text editor, for example, so don't expect to extend UITextView with it. But you can use it to draw any kind of rich text on screen, which can make you avoid using UIWebView instances for that.
 
