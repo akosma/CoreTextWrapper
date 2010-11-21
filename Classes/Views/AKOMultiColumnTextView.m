@@ -231,9 +231,11 @@
         
         if (self.font != nil)
         {
+            CTFontRef font = self.font.CTFont;
             [self.attributedString addAttribute:(NSString *)kCTFontAttributeName
-                                          value:(id)self.font.CTFont
+                                          value:(id)font
                                           range:range];
+            CFRelease(font);
         }
         
         if (self.color != nil)
@@ -295,6 +297,7 @@
             
             CFRange frameRange = CTFrameGetVisibleStringRange(frame);
             currentIndex += frameRange.length;
+            CFRelease(frame);
         }
         
         _finalIndex = currentIndex;
