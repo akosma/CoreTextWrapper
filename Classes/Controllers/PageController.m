@@ -42,6 +42,9 @@
     [super viewDidLoad];
     self.label.text = @"News of the Day";
     self.label.font = [UIFont bundledFontNamed:@"Polsku" size:34.0];
+    self.label.shadowColor = [UIColor grayColor];
+    self.label.shadowOffset = CGSizeMake(0, 1);
+    
 
     self.fontSize = 24.0;
     self.multiPageView.text = [NSString stringFromFileNamed:@"lorem_ipsum.txt"];

@@ -15,10 +15,15 @@
     CTFontRef _font;
     NSString *_text;
     UIColor *_textColor;
+    UIColor *_shadowColor;
+    CGSize _shadowOffset;
+    AKOCustomFontLabel *_shadowSubview;
 }
 
 @property (nonatomic, copy) NSString *text;
 @property (nonatomic, retain) UIColor *textColor;
+@property (nonatomic, retain) UIColor *shadowColor;
+@property (nonatomic, assign) CGSize shadowOffset;
 
 - (CTFontRef)font;
 - (void)setFont:(CTFontRef)customFont;
