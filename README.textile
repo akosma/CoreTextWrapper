@@ -18,6 +18,14 @@ h2. What's next
 
 A future extension I'd like to add would be a couple of categories to parse simple RTF or HTML strings (to start with, probably just with bold and italic text) and create the appropriate attributed string from it; there's a couple of AppKit extensions to NSAttributedString that do exactly that, but for the moment they are only available in the Mac version of Cocoa, and I haven't found anything similar for iOS yet.
 
+
+h2. Thanks
+
+The following people have helped this project grow, with pull requests, comments or bug reports:
+
+* "Jared Crawford":https://github.com/JaredCrawford
+
 h2. License
 
 The code, as usual, is available through with BSD license (see the LICENSE file), so feel free to use it and even contribute bug fixes or enhancements if you want. The font embedded in the project is Polsku Regula, "available through the Open Font Library.org":http://openfontlibrary.org/files/ospublish/140. The project requires Xcode 3.2.3 and the iOS SDK 4.0, and it creates a simple application that works on the iPad (iOS 3.2). As usual, use it at your own risk. Enjoy!
+
