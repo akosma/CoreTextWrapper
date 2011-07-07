@@ -53,6 +53,7 @@
 		3ACEB3A711E5D104005316CD /* PageController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageController.xib; sourceTree = "<group>"; };
 		3ACEB3A911E5D112005316CD /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* CoreTextWrapper-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "CoreTextWrapper-Info.plist"; path = "../CoreTextWrapper-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		DAEE4FDB137C68EB0054D8F6 /* AKOMultiColumnTextViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKOMultiColumnTextViewDataSource.h; path = Classes/Helpers/AKOMultiColumnTextViewDataSource.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +197,7 @@
 				3ACEB39011E5CFD4005316CD /* AKOMultiColumnTextView.m */,
 				3ACEB39111E5CFD4005316CD /* AKOMultiPageTextView.h */,
 				3ACEB39211E5CFD4005316CD /* AKOMultiPageTextView.m */,
+				DAEE4FDB137C68EB0054D8F6 /* AKOMultiColumnTextViewDataSource.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";

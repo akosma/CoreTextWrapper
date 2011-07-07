@@ -47,13 +47,28 @@
     
 
     self.fontSize = 24.0;
+    
+    self.multiPageView.dataSource = self;
+     self.multiPageView.columnInset = CGPointMake(50, 30);
     self.multiPageView.text = [NSString stringFromFileNamed:@"lorem_ipsum.txt"];
     self.multiPageView.font = [UIFont fontWithName:@"Georgia" size:self.fontSize];
-    self.multiPageView.columnCount = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 3 : 4;
+    self.multiPageView.columnCount = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 2 : 3;
 
     UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self 
                                                                                            action:@selector(changeTextSize:)] autorelease];
     [self.multiPageView addGestureRecognizer:pinchRecognizer];
+}
+
+- (UIView*)akoMultiColumnTextView:(AKOMultiColumnTextView*)textView viewForColumn:(NSInteger)column onPage:(NSInteger)page
+{
+    if (page == 0 && column == 1)
+    {
+        UIView *view = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 200)] autorelease];
+        view.backgroundColor = [UIColor redColor];
+        return view;
+    }
+        
+    return nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation 
@@ -71,11 +86,11 @@
 {
     if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
     {
-        self.multiPageView.columnCount = 3;
+        self.multiPageView.columnCount = 2;
     }
     else
     {
-        self.multiPageView.columnCount = 4;
+        self.multiPageView.columnCount = 3;
     }
     [self.multiPageView setNeedsDisplay];
     [self.label setNeedsDisplay];

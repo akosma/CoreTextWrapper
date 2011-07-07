@@ -1,4 +1,4 @@
-//
+
 //  AKOMultiColumnTextView.m
 //  CoreTextWrapper
 //
@@ -17,7 +17,7 @@
 - (void)updateFrames;
 - (void)setup;
 - (void)createColumns;
-
+- (void)setPage:(NSInteger)page;
 @end
 
 
@@ -31,6 +31,16 @@
 @synthesize finalIndex = _finalIndex;
 @synthesize moreTextAvailable = _moreTextAvailable;
 @synthesize attributedString = _attributedString;
+
+@synthesize lineBreakMode = _lineBreakMode;
+@synthesize textAlignment = _textAlignment;
+@synthesize firstLineHeadIndent = _firstLineHeadIndent;
+@synthesize spacing = _spacing;
+@synthesize topSpacing = _topSpacing;
+@synthesize lineSpacing = _lineSpacing;
+@synthesize columnInset = _columnInset;
+
+@synthesize dataSource = _dataSource;
 
 #pragma mark -
 #pragma mark Init and dealloc
@@ -47,11 +57,20 @@
     _moreTextAvailable = NO;
     _columnPaths = NULL;
     _frames = NULL;
+    
+    
+    _lineBreakMode = kCTLineBreakByWordWrapping;
+    _textAlignment = kCTLeftTextAlignment;
+    _firstLineHeadIndent = 0.0;
+    _spacing = 5.0;
+    _topSpacing = 3.0;
+    _lineSpacing = 1.0;
+    _columnInset = CGPointMake(10.0, 10.0);
 }
 
 - (id)initWithFrame:(CGRect)frame 
 {
-    if (self = [super initWithFrame:frame])
+    if ((self = [super initWithFrame:frame]))
     {
         [self setup];
     }
@@ -60,7 +79,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if (self = [super initWithCoder:aDecoder])
+    if ((self = [super initWithCoder:aDecoder]))
     {
         [self setup];
     }
@@ -79,6 +98,7 @@
         CFRelease(_frames);
     }
     
+    self.dataSource = nil;
     self.attributedString = nil;
 
     [_text release];
@@ -127,6 +147,19 @@
     return _text;
 }
 
+- (void)setDataSource:(id<AKOMultiColumnTextViewDataSource>)dataSource
+{
+    if (![_dataSource isEqual:dataSource])
+    {
+        _dataSource = dataSource;
+         if (dataSource != nil)
+         {
+             [self updateFrames];
+             [self setNeedsDisplay];
+         }
+    }
+}
+
 - (void)setText:(NSString *)newText
 {
     if (![_text isEqualToString:newText])
@@ -154,6 +187,8 @@
         [self setNeedsDisplay];
     }
 }
+
+
 
 #pragma mark -
 #pragma mark Drawing methods
@@ -183,6 +218,7 @@
 
 - (void)createColumns
 {
+    
     int column;
     CGRect* columnRects = (CGRect*)calloc(_columnCount, sizeof(*columnRects));
     
@@ -203,7 +239,7 @@
     // Inset all columns by a few pixels of margin.
     for (column = 0; column < _columnCount; column++) 
     {
-        columnRects[column] = CGRectInset(columnRects[column], 10.0, 10.0);
+        columnRects[column] = CGRectInset(columnRects[column], _columnInset.x, _columnInset.y);
     }
     
     // Create an array of layout paths, one for each column.
@@ -215,11 +251,75 @@
     for (column = 0; column < _columnCount; column++) 
     {
         CGMutablePathRef path = CGPathCreateMutable();
-        CGPathAddRect(path, NULL, columnRects[column]);
+        
+       
+        // ask the delegate here
+        UIView *columnView = nil;
+        if ([self.dataSource respondsToSelector:@selector(akoMultiColumnTextView:viewForColumn:onPage:)])
+        {
+            columnView = [self.dataSource akoMultiColumnTextView:self viewForColumn:column onPage:_page];
+        }
+        if (columnView != nil)
+        {
+            CGRect columnRect = columnRects[column];
+            CGRect rectFromView = columnView.frame;
+            CGFloat cutLine = 0;
+            CGFloat drawYOffset = 0;
+            BOOL drawAbove = YES;
+            
+            
+            if (rectFromView.origin.y < 0)
+            {
+                cutLine = rectFromView.origin.y+rectFromView.size.height + _columnInset.y;
+            }
+            else if (rectFromView.origin.y+rectFromView.size.height >= columnRect.size.height)
+            {
+                cutLine = columnRect.size.height-(columnRect.size.height - rectFromView.origin.y) - _columnInset.y;  
+                drawAbove = NO;
+                drawYOffset = columnRect.size.height-cutLine + _columnInset.y; 
+            }
+            else
+            {
+                cutLine = rectFromView.size.height+_columnInset.y;  
+            }
+
+            CGRect rectToDraw1;
+            CGRect rectToDraw2;
+            CGRectDivide(columnRect, 
+                         &rectToDraw1,
+                         &rectToDraw2, 
+                         cutLine, 
+                         CGRectMinYEdge);
+            
+            
+            
+            CGRect drawRect = rectToDraw1;
+            if (drawAbove == YES)
+            {
+                drawRect = rectToDraw2;
+            }
+            
+            CGPathAddRect(path, NULL, CGRectMake(drawRect.origin.x,drawYOffset +_columnInset.y, drawRect.size.width, drawRect.size.height-_columnInset.y));
+            
+            // Not add the desired view on the column
+            columnView.frame = CGRectMake(drawRect.origin.x,
+                                          columnView.frame.origin.y + _columnInset.y,
+                                          columnView.frame.size.width,
+                                          columnView.frame.size.height);
+            
+            [self addSubview:columnView];
+        }
+        else
+        {
+            CGPathAddRect(path, NULL, columnRects[column]);
+        }
+        
         CFArrayInsertValueAtIndex(_columnPaths, column, path);
         CFRelease(path);
     }
     free(columnRects);
+    
+
 }
 
 - (void)updateAttributedString
@@ -245,21 +345,16 @@
                                           range:range];
         }
         
+        
         CFIndex theNumberOfSettings = 6;
-        CTLineBreakMode lineBreakMode = kCTLineBreakByWordWrapping;
-        CTTextAlignment textAlignment = kCTLeftTextAlignment;
-        CGFloat indent = 10.0;
-        CGFloat spacing = 15.0;
-        CGFloat topSpacing = 5.0;
-        CGFloat lineSpacing = 1.0;
         CTParagraphStyleSetting theSettings[6] =
         {
-            { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &textAlignment },
-            { kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &lineBreakMode },
-            { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &indent },
-            { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &spacing },
-            { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &topSpacing },
-            { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &lineSpacing }
+            { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &_textAlignment },
+            { kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &_lineBreakMode },
+            { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &_firstLineHeadIndent },
+            { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &_spacing },
+            { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &_topSpacing },
+            { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &_lineSpacing }
         };
         
         CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
@@ -304,6 +399,11 @@
         _moreTextAvailable = [self.text length] > self.finalIndex;
         CFRelease(framesetter);
     }
+}
+
+- (void)setPage:(NSInteger)page
+{
+    _page = page;
 }
 
 @end

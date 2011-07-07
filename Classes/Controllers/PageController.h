@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AKOMultiColumnTextViewDataSource.h"
+
 
 @class AKOMultiPageTextView;
 @class AKOCustomFontLabel;
 
-@interface PageController : UIViewController 
+@interface PageController : UIViewController  <AKOMultiColumnTextViewDataSource>
 {
 @private
     AKOMultiPageTextView *_multiPageView;
