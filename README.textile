@@ -23,7 +23,8 @@ h2. Thanks
 
 The following people have helped this project grow, with pull requests, comments or bug reports:
 
-* "Jared Crawford":https://github.com/JaredCrawford
+* "Jared Crawford":https://github.com/JaredCrawford contributed support for shadows in AKOCustomFontLabel.
+* "Christian Menschel":http://www.tapwork.de contributed the AKOMultiColumnTextViewDataSource protocol to add custom views in the text columns.
 
 h2. License
 
