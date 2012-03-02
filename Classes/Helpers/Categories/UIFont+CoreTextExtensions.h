@@ -11,7 +11,7 @@
 
 @interface UIFont (CoreTextExtensions)
 
-@property (nonatomic, readonly) CTFontRef CTFont;
+- (CTFontRef)createCTFont;
 
 + (CTFontRef)bundledFontNamed:(NSString *)name size:(CGFloat)size;
 

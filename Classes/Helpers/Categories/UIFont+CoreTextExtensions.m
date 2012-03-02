@@ -10,7 +10,7 @@
 
 @implementation UIFont (CoreTextExtensions)
 
-- (CTFontRef)CTFont
+- (CTFontRef)createCTFont;
 {
     CTFontRef font = CTFontCreateWithName((CFStringRef)self.fontName, self.pointSize, NULL);
     return font;

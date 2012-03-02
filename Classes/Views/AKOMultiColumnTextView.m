@@ -331,7 +331,7 @@
         
         if (self.font != nil)
         {
-            CTFontRef font = self.font.CTFont;
+            CTFontRef font = [self.font createCTFont];
             [self.attributedString addAttribute:(NSString *)kCTFontAttributeName
                                           value:(id)font
                                           range:range];
