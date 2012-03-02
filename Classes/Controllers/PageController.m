@@ -8,7 +8,6 @@
 
 #import "PageController.h"
 #import "AKOMultiPageTextView.h"
-#import "AKOCustomFontLabel.h"
 #import "NSString+BundleExtensions.h"
 #import "UIFont+CoreTextExtensions.h"
 
@@ -41,7 +40,7 @@
 {
     [super viewDidLoad];
     self.label.text = @"News of the Day";
-    self.label.font = [UIFont bundledFontNamed:@"Polsku" size:34.0];
+    self.label.font = [UIFont fontWithName:@"Polsku" size:34.0];
     self.label.shadowColor = [UIColor lightGrayColor];
     self.label.shadowOffset = CGSizeMake(2, 2);
     

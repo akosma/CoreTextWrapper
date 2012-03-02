@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-    [self.window addSubview:self.pageController.view];
+    self.window.rootViewController = self.pageController;
     [self.window makeKeyAndVisible];
 	
 	return YES;
@@ -31,7 +31,7 @@
 
 - (void)dealloc 
 {
-    [self.window release];
+    [_window release];
     [super dealloc];
 }
 

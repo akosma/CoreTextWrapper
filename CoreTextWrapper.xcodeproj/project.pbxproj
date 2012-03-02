@@ -11,7 +11,6 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		3A741AD811E5D932007CA229 /* AKOCustomFontLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A741AD711E5D932007CA229 /* AKOCustomFontLabel.m */; };
 		3A741B2411E5DF73007CA229 /* Polsku.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A741B2311E5DF73007CA229 /* Polsku.ttf */; };
 		3ACEB36E11E5CF6C005316CD /* CoreTextWrapperAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACEB36C11E5CF6C005316CD /* CoreTextWrapperAppDelegate.m */; };
 		3ACEB37211E5CF78005316CD /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ACEB37111E5CF78005316CD /* MainWindow.xib */; };
@@ -32,8 +31,6 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* CoreTextWrapper_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextWrapper_Prefix.pch; sourceTree = "<group>"; };
-		3A741AD611E5D932007CA229 /* AKOCustomFontLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKOCustomFontLabel.h; sourceTree = "<group>"; };
-		3A741AD711E5D932007CA229 /* AKOCustomFontLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKOCustomFontLabel.m; sourceTree = "<group>"; };
 		3A741B2311E5DF73007CA229 /* Polsku.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Polsku.ttf; sourceTree = "<group>"; };
 		3ACEB36B11E5CF6C005316CD /* CoreTextWrapperAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextWrapperAppDelegate.h; sourceTree = "<group>"; };
 		3ACEB36C11E5CF6C005316CD /* CoreTextWrapperAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreTextWrapperAppDelegate.m; sourceTree = "<group>"; };
@@ -191,8 +188,6 @@
 		3ACEB38E11E5CFD4005316CD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3A741AD611E5D932007CA229 /* AKOCustomFontLabel.h */,
-				3A741AD711E5D932007CA229 /* AKOCustomFontLabel.m */,
 				3ACEB38F11E5CFD4005316CD /* AKOMultiColumnTextView.h */,
 				3ACEB39011E5CFD4005316CD /* AKOMultiColumnTextView.m */,
 				3ACEB39111E5CFD4005316CD /* AKOMultiPageTextView.h */,
@@ -284,7 +279,6 @@
 				3ACEB39311E5CFD4005316CD /* AKOMultiColumnTextView.m in Sources */,
 				3ACEB39411E5CFD4005316CD /* AKOMultiPageTextView.m in Sources */,
 				3ACEB3A211E5D070005316CD /* PageController.m in Sources */,
-				3A741AD811E5D932007CA229 /* AKOCustomFontLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

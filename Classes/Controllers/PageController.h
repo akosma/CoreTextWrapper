@@ -11,18 +11,17 @@
 
 
 @class AKOMultiPageTextView;
-@class AKOCustomFontLabel;
 
 @interface PageController : UIViewController  <AKOMultiColumnTextViewDataSource>
 {
 @private
     AKOMultiPageTextView *_multiPageView;
-    AKOCustomFontLabel *_label;
+    UILabel *_label;
     CGFloat _previousScale;
     CGFloat _fontSize;
 }
 
-@property (nonatomic, retain) IBOutlet AKOCustomFontLabel *label;
+@property (nonatomic, retain) IBOutlet UILabel *label;
 @property (nonatomic, retain) IBOutlet AKOMultiPageTextView *multiPageView;
 
 @end
