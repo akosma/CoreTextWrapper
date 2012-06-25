@@ -182,8 +182,10 @@
     }
 }
 
-- (void)setTexts:(NSArray *)newTexts {
-    if (![_texts isEqual:newTexts]) {
+- (void)setTexts:(NSArray *)newTexts
+{
+    if (![_texts isEqual:newTexts])
+    {
         [_text release];
         _text = nil;
         
@@ -470,7 +472,8 @@
         _moreTextAvailable = [self.text length] > self.finalIndex;
         CFRelease(framesetter);
     }
-    else if (self.texts != nil) {
+    else if (self.texts != nil)
+    {
         [_attributedStrings removeAllObjects];
         for (int column = 0; column < _columnCount; column++)
         {
