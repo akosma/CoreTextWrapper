@@ -16,7 +16,9 @@
     NSInteger _columnCount;
     UIFont *_font;
     NSString *_text;
+    NSArray *_texts;
     NSMutableAttributedString *_attributedString;
+    NSMutableArray *_attributedStrings;
     UIColor *_color;
     CFMutableArrayRef _columnPaths;
     CFMutableArrayRef _frames;
@@ -39,6 +41,7 @@
 @property (nonatomic) NSInteger columnCount;
 @property (nonatomic, retain) UIFont *font;
 @property (nonatomic, copy) NSString *text;
+@property (nonatomic, copy) NSArray *texts;
 @property (nonatomic, retain) UIColor *color;
 @property (nonatomic) CFIndex startIndex;
 @property (nonatomic, readonly) CFIndex finalIndex;

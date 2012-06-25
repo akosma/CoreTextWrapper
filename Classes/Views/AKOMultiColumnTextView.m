@@ -12,6 +12,7 @@
 @interface AKOMultiColumnTextView ()
 
 @property (nonatomic, retain) NSMutableAttributedString *attributedString;
+@property (nonatomic, retain) NSMutableArray *attributedStrings;
 
 - (void)updateAttributedString;
 - (void)updateFrames;
@@ -26,11 +27,13 @@
 @dynamic font;
 @dynamic columnCount;
 @dynamic text;
+@dynamic texts;
 @dynamic color;
 @synthesize startIndex = _startIndex;
 @synthesize finalIndex = _finalIndex;
 @synthesize moreTextAvailable = _moreTextAvailable;
 @synthesize attributedString = _attributedString;
+@synthesize attributedStrings = _attributedStrings;
 
 @synthesize lineBreakMode = _lineBreakMode;
 @synthesize textAlignment = _textAlignment;
@@ -58,7 +61,7 @@
     _columnPaths = NULL;
     _frames = NULL;
     
-    
+    _attributedStrings = [[NSMutableArray alloc] init];
     _lineBreakMode = kCTLineBreakByWordWrapping;
     _textAlignment = kCTLeftTextAlignment;
     _firstLineHeadIndent = 0.0;
@@ -100,6 +103,7 @@
     
     self.dataSource = nil;
     self.attributedString = nil;
+    self.attributedStrings = nil;
 
     [_text release];
     _text = nil;
@@ -147,6 +151,11 @@
     return _text;
 }
 
+- (NSArray *)texts
+{
+    return _texts;
+}
+
 - (void)setDataSource:(id<AKOMultiColumnTextViewDataSource>)dataSource
 {
     if (![_dataSource isEqual:dataSource])
@@ -166,6 +175,20 @@
     {
         [_text release];
         _text = [newText copy];
+        
+        self.attributedString = nil;
+        [self updateFrames];
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setTexts:(NSArray *)newTexts {
+    if (![_texts isEqual:newTexts]) {
+        [_text release];
+        _text = nil;
+        
+        [_texts release];
+        _texts = [newTexts copy];
         
         self.attributedString = nil;
         [self updateFrames];
@@ -366,6 +389,54 @@
     }
 }
 
+
+- (NSMutableAttributedString *)newAttributedStringWithString:(NSString *)aString
+{
+    NSMutableAttributedString *attributedString = nil;
+    if (aString != nil)
+    {
+        attributedString = [[NSMutableAttributedString alloc] initWithString:aString];
+        NSRange range = NSMakeRange(0, [aString length]);
+        
+        if (self.font != nil)
+        {
+            CTFontRef font = [self.font createCTFont];
+            [attributedString addAttribute:(NSString *)kCTFontAttributeName
+                                     value:(id)font
+                                     range:range];
+            CFRelease(font);
+        }
+        
+        if (self.color != nil)
+        {
+            [attributedString addAttribute:(NSString *)kCTForegroundColorAttributeName
+                                     value:(id)self.color.CGColor
+                                     range:range];
+        }
+        
+        
+        CFIndex theNumberOfSettings = 6;
+        CTParagraphStyleSetting theSettings[6] =
+        {
+            { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment), &_textAlignment },
+            { kCTParagraphStyleSpecifierLineBreakMode, sizeof(CTLineBreakMode), &_lineBreakMode },
+            { kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(CGFloat), &_firstLineHeadIndent },
+            { kCTParagraphStyleSpecifierParagraphSpacing, sizeof(CGFloat), &_spacing },
+            { kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(CGFloat), &_topSpacing },
+            { kCTParagraphStyleSpecifierLineSpacing, sizeof(CGFloat), &_lineSpacing }
+        };
+        
+        CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
+        [attributedString addAttribute:(NSString *)kCTParagraphStyleAttributeName
+                                 value:(id)paragraphStyle
+                                 range:range];
+        
+        CFRelease(paragraphStyle);
+    }
+    return attributedString;
+}
+
+
 - (void)updateFrames
 {
     if (self.text != nil)
@@ -398,6 +469,43 @@
         _finalIndex = currentIndex;
         _moreTextAvailable = [self.text length] > self.finalIndex;
         CFRelease(framesetter);
+    }
+    else if (self.texts != nil) {
+        [_attributedStrings removeAllObjects];
+        for (int column = 0; column < _columnCount; column++)
+        {
+            if (column < [_texts count])
+            {
+                NSString *currentText = [_texts objectAtIndex:column];
+                [_attributedStrings addObject:[[self newAttributedStringWithString:currentText] autorelease]];
+            }
+        }
+        [self createColumns];
+        CFIndex pathCount = CFArrayGetCount(_columnPaths);
+        
+        if (_frames != NULL)
+        {
+            CFRelease(_frames);
+        }
+        _frames = CFArrayCreateMutable(kCFAllocatorDefault, pathCount, &kCFTypeArrayCallBacks);
+        
+        for (int column = 0; column < pathCount; column++)
+        {
+            if (column < [_attributedStrings count])
+            {
+                CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)[_attributedStrings objectAtIndex:column]);
+                
+                CGPathRef path = (CGPathRef)CFArrayGetValueAtIndex(_columnPaths, column);
+                
+                CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+                CFArrayInsertValueAtIndex(_frames, column, frame);
+                
+                CFRelease(frame);
+                CFRelease(framesetter);
+            }
+        }
+        
+        _moreTextAvailable = NO;
     }
 }
 
