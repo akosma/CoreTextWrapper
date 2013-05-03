@@ -48,7 +48,7 @@
     self.fontSize = 24.0;
     
     self.multiPageView.dataSource = self;
-     self.multiPageView.columnInset = CGPointMake(50, 30);
+    self.multiPageView.columnInset = CGPointMake(50, 30);
     self.multiPageView.text = [NSString stringFromFileNamed:@"lorem_ipsum.txt"];
     self.multiPageView.font = [UIFont fontWithName:@"Georgia" size:self.fontSize];
     self.multiPageView.columnCount = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 2 : 3;
