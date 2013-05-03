@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'CoreTextWrapper'
-  s.version      = '1.0.1'
+  s.version      = '1.1'
   s.authors      = { 'Adrian Kosmaczewski' => 'akosma@gmail.com' }
   s.license      = 'LICENSE'
   s.homepage     = 'http://akosma.github.io/CoreTextWrapper'
