@@ -101,9 +101,9 @@
         CFRelease(_frames);
     }
     
-    self.dataSource = nil;
-    self.attributedString = nil;
-    self.attributedStrings = nil;
+    _dataSource = nil;
+    _attributedString = nil;
+    _attributedStrings = nil;
 
     [_text release];
     _text = nil;
