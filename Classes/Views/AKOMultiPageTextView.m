@@ -114,11 +114,10 @@
 
 - (void)dealloc 
 {
-    self.pageControl = nil;
-    self.scrollView = nil;
-    self.pages = nil;
-    self.dataSource = nil;
-  
+    _pageControl = nil;
+    _scrollView = nil;
+    _pages = nil;
+    _dataSource = nil;
     
     [_text release];
     _text = nil;
